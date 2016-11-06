@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>WSD 2014 - Exercise 2 HTML FORM</title>
+    <meta name="description" content="Second exercise of WSD 2014: HTML Form">
+    <meta name="author" content="kamalm1">
+  </head>
+
+  <body>
+
+    <form action="http://127.0.0.1/wsd/html_form_check" method="post">
+      <label for="email">Email
+        <input type="email" name="email" id="email" />
+      </label><br/>
+      <label for="passwd">Password
+        <input type="password" name="passwd" id="passwd" />
+      </label><br/>
+      <label for="passwd2">Repeat password
+        <input type="password" name="passwd2" id="passwd2" />
+      </label><br/>
+      <label for="lang">Language
+        <select name="lang" id="lang">
+          <option value="fi">Finnish</option>
+          <option value="sv">Swedish</option>
+          <option value="no">Norwegian</option>
+          <option value="da">Danish</option>
+          <option value="is">Icelandic</option>
+        </select>
+      </label><br/>
+      <input type="checkbox" name="terms" id="terms" value="on"><label for="terms">I accept terms and conditions</label><br/>
+      <input type="submit" value="submit">
+  	</form>
+
+  </body>
+
+</html>
