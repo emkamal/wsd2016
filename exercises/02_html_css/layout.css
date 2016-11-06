@@ -1,0 +1,21 @@
+
+#navigation li {
+    display: inline;
+}
+#navigation {
+    border: 1px solid #ccc;
+}
+#aside {
+    border: 1px solid #ccc;
+    float: right;
+    width: 20%;
+}
+#content {
+    border: 1px solid #ccc;
+    float: left;
+    width: 75%;
+}
+#footer {
+    clear: both;
+    text-align: center;
+}
