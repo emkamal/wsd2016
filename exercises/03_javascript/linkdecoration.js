@@ -9,8 +9,23 @@ $("#javascript_end").html("[WAITING]...this far we haven't reached the end... Ma
 // ADD YOUR CODE BETWEEN THESE LINES //
 
 
+$(function() {
+    $("a[href$='.pdf']").addClass('pdf');
+	
+	var allLinks = $("a[href$='.zip']");
+	
+	var allLinks = $("a");
 
-
+	allLinks = allLinks.filter(function () {
+	  return $(this).attr('href').match(/\.[a-zA-Z0-9]+$/i);
+	});
+	
+	allLinks = allLinks.not(function () {
+	  return $(this).attr('href').match(/\.(pdf|html|htm)$/i);
+	});
+	
+	allLinks.addClass('download');
+});
 
 
 
