@@ -21,7 +21,7 @@ function addPersonMethods(p){
 			console.log("We have different names, "+anotherPersonObject.name+" and I.");
 		}
 		else{
-			console.log("We have the same names, "+anotherPersonObject.name+" and I!");
+			console.log("We have the same name, "+anotherPersonObject.name+" and I!");
 		}
 	}
 	
