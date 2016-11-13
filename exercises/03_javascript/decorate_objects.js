@@ -26,10 +26,10 @@ function addPersonMethods(p){
 	
 	p.namesake = function(anotherPersonObject){
 		if(p.name != anotherPersonObject.name){
-			console.log("We have different names, "+anotherPersonObject.name+" and I.");
+			console.log("We have different names, "+anotherPersonObject.name+" and I!");
 		}
 		else{
-			console.log("We have the same names, "+anotherPersonObject.name+" and I.");
+			console.log("We have the same names, "+anotherPersonObject.name+" and I!");
 		}
 	}
 	
