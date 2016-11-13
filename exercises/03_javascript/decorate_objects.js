@@ -1,10 +1,11 @@
+/*
 var bob_def =  { name: 'Bob', age: 21 };
 var eve_def =  { name: 'Eve', age: 21 };
 
 var eve = addPersonMethods(eve_def);
 var bob = addPersonMethods(bob_def);
 var another_bob = addPersonMethods({name:'Bob', age: 40});
-
+*/
 function addPersonMethods(p){
 	
 	p.greet = function(greetingString){
