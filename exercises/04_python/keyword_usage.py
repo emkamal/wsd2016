@@ -8,4 +8,4 @@ def keyword_usage( string, keywords ):
 		else:
 			result = result + (False,)
 	
-	print( result )
+	return result
