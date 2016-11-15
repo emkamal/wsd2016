@@ -16,12 +16,12 @@ class Circle:
 	
 	radius = 0
 	
-	def __init__(self, centerPoint, radius):
-		self.centerPoint = centerPoint
+	def __init__(self, center, radius):
+		self.center = centerPoint
 		self.radius = radius
 		
 	def is_inside(self, otherPoint):
-		d = self.centerPoint.distance_from(otherPoint);
+		d = self.center.distance_from(otherPoint);
 		
 		if d <= self.radius:
 			return True
