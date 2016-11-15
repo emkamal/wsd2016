@@ -17,7 +17,7 @@ class Circle:
 	radius = 0
 	
 	def __init__(self, center, radius):
-		self.center = centerPoint
+		self.center = center
 		self.radius = radius
 		
 	def is_inside(self, otherPoint):
