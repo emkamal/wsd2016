@@ -23,7 +23,7 @@ class Circle:
 	def is_inside(self, otherPoint):
 		d = self.centerPoint.distance_from(otherPoint);
 		
-		if d < self.radius:
+		if d <= self.radius:
 			return True
 		else:
 			return False
