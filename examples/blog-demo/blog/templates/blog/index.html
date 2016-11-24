@@ -1,0 +1,18 @@
+{% extends "blog/main.html" %}
+
+{% block title %} All blogs {% endblock %}
+
+{% block content %}
+
+  {% if blogs %}
+    {% for blog in blogs %}
+      <div>
+          <h1><a href="{% url 'blog' blog.slug %}">{{ blog.title }}</a></h1>
+          <p>by {{ blog.author }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <h2>There are no blogs yet!</h2>
+  {% endif %}
+
+{% endblock %}

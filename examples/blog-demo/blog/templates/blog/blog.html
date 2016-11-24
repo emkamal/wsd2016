@@ -1,0 +1,25 @@
+{% extends "blog/main.html" %}
+
+{% block title %} {{ blog.author }}'s blog {% endblock %}
+
+{% block header %}
+<div class="blog-header">
+    <h1 class="blog-title">{{ blog.title }}</h1>
+    <p class="lead blog-description"> by {{ blog.author }}</small></p>
+</div>
+{% endblock %}
+
+{%  block content %}
+
+    {% if posts %}
+      {% for post in posts %}
+          <div class="blog-post">
+              <h2 class="blog-post-title">{{ post.title }}</h1>
+              <p>{{ post.text }}</p>
+          </div>
+      {% endfor %}
+    {% else %}
+      <h2>Hang in there, there will be posts soon!</h2>
+    {% endif %}
+
+{% endblock %}
