@@ -1,4 +1,5 @@
 import json
+import os
 
 class Song:
     artist = "file"
@@ -17,13 +18,14 @@ class Song:
         # load file based on the location and read all the info to be populated
         file_location = "lastfm_subset/" + "/".join(folders) + "/" + track_id + ".json"
 
-        with open(file_location) as json_data:
-            data = json.load(json_data)
-            self.artist = data['artist']
-            self.title = data['title']
-            self.timestamp = data['timestamp']
-            self.tags = data['tags']
-            self.similars = data['similars']
+        if os.path.exists(file_location):
+            with open(file_location) as json_data:
+                data = json.load(json_data)
+                self.artist = data['artist']
+                self.title = data['title']
+                self.timestamp = data['timestamp']
+                self.tags = data['tags']
+                self.similars = data['similars']
 
     def get_tags(self, limit=0):
         tags_name = []
