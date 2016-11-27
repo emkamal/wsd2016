@@ -60,4 +60,13 @@ class Song:
         return shared_tags
 
     def combined_tags(self, other_song_instance):
-        pass
+        combined_tags = ()
+
+        for tag in self.tags:
+            combined_tags = combined_tags + (tag[0],)
+
+        for other_tag in other_song_instance.tags:
+            if other_tag[0] not in combined_tags:
+                combined_tags = combined_tags + (other_tag[0],)
+
+        return combined_tags
