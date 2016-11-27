@@ -50,7 +50,14 @@ class Song:
         return similars_id
 
     def shared_tags(self, other_song_instance):
-        pass
+        shared_tags = []
+        
+        for tag in self.tags:
+            for other_tag in other_song_instance.tags:
+                if tag[0] == other_tag[0]:
+                    shared_tags.append(tag[0])
+
+        return shared_tags
 
     def combined_tags(self, other_song_instance):
         pass
