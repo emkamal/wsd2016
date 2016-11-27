@@ -46,7 +46,7 @@ class Song:
             if limit == 0:
                 similars_id.append(similar[0])
             else:
-                if(int(similar[1]) >= limit):
+                if(float(similar[1]) >= limit):
                     similars_id.append(similar[0])
 
         return similars_id
