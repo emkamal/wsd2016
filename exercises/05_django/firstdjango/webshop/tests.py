@@ -51,27 +51,27 @@ class SimpleTest(TestCase):
             self.assertTrue(False, "Testing if field %s exists in model %s"%(fieldname, modelname))
         return field
 
-    @unittest.skip("Exercise 3")
+    #@unittest.skip("Exercise 3")
     def test_product_title(self):
         title = self._test_field_type(Product, 'Product', 'title', models.CharField)
         self.assertEquals(title.max_length, 255, "Testing the max_length of title field")
         self.assertTrue(title.unique, "Testing if title is set to unique")
 
-    @unittest.skip("Exercise 3")
+    #@unittest.skip("Exercise 3")
     def test_product_description(self):
         desc = self._test_field_type(Product, 'Product', 'description', models.TextField)
 
-    @unittest.skip("Exercise 3")
+    #@unittest.skip("Exercise 3")
     def test_product_image(self):
         imageurl = self._test_field_type(Product, 'Product', 'image_url', models.URLField)
         self.assertTrue(imageurl.blank, "Testing that image_url can be blank")
 
-    @unittest.skip("Exercise 3")
+    #@unittest.skip("Exercise 3")
     def test_product_quantity(self):
         quantity = self._test_field_type(Product, 'Product', 'quantity', models.IntegerField)
         self.assertEquals(quantity.default, 0, "Testing that quantity has default value set to 0")
 
-    @unittest.skip("Exercise 3")
+    #@unittest.skip("Exercise 3")
     def test_sell_method(self):
         p = Product(title='title', description='desc', quantity=self.randint)
         p.save()
