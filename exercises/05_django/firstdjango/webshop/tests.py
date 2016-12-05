@@ -20,7 +20,7 @@ class SimpleTest(TestCase):
         response = self.client.get('/about/%s/'%(self.randstr))
         self.assertEqual(response.status_code, 404, "Testing that /about/%s/ does not work"%(self.randstr))
 
-    #@unittest.skip("Exercise 2")
+    @unittest.skip("Exercise 2")
     def test_product_url(self):
         i = random.randint(20,40)
         response = self.client.get('/products/%d/'%(i))
@@ -33,7 +33,7 @@ class SimpleTest(TestCase):
         response = self.client.get('/%s/products/%d/'%(self.randstr, i))
         self.assertEqual(response.status_code, 404, "Testing that /%s/products/%d/ does not work"%(self.randstr, i))
 
-    #@unittest.skip("Exercise 2")
+    @unittest.skip("Exercise 2")
     def test_available_products_url(self):
         response = self.client.get("/products/")
         self.assertEqual(response.status_code, 200, "Testing that a request to /products/ succeeded")
@@ -87,7 +87,7 @@ class SimpleTest(TestCase):
             p.quantity = i
             p.save()
 
-    @unittest.skip("Exercise 4")
+    #@unittest.skip("Exercise 4")
     def test_available_products(self):
         self._add_5_products()
         response = self.client.get('/products/')
@@ -98,7 +98,7 @@ class SimpleTest(TestCase):
         for product in available:
             self.assertTrue(product in real, "Testing that the included products are correct")
 
-    @unittest.skip("Exercise 4")
+    #@unittest.skip("Exercise 4")
     def test_productview(self):
         self._add_5_products()
         response = self.client.get('/products/1/')
@@ -107,7 +107,7 @@ class SimpleTest(TestCase):
         product = response.context['product']
         self.assertEquals(product, Product.objects.get(pk=1), "Testing that the correct product was rendered")
 
-    @unittest.skip("Exercise 4")
+    #@unittest.skip("Exercise 4")
     def test_productview_nonexisting_id(self):
         response = self.client.get('/products/%d/'%(random.randint(100, 200)))
         self.assertEquals(response.status_code, 404, "Testing that a nonexisting product id returns 404 response code")
