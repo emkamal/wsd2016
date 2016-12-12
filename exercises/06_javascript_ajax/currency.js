@@ -2,7 +2,7 @@ $(function(){
   $("#search").on("click", function(e){
     e.preventDefault();
 
-    $.getJSON( "http://api.fixer.io/"+$("#date").val(), function( data ) {
+    $.getJSON( "http://api.fixer.io/"+$("#date").val()+"?callback=?", function( data ) {
       $("#currencies").html("");
       $.each(data.rates, function(idx, val){
         $("#currencies").append("<tr><td>"+idx+"</td><td>"+val+"</td></tr>");
