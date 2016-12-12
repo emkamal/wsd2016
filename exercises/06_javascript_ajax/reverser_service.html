@@ -1,0 +1,33 @@
+<html>
+<head>
+  <title>Reverser Service</title>
+  <meta charset="utf-8">
+  <script src="lib/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+  <form id="reverser">
+    <input id="toBeReversed" name="input" type="text" />
+    <input type="submit" id="submitReverser" />
+  </form>
+  <button id="clearInput">Clear Input</button>
+</body>
+
+<script>
+  var msg = {};
+  $("#clearInput").on("click", function(){
+    $("#toBeReversed").val();
+    msg.payload = "INPUT CLEARED";
+    parent.postMessage(msg, '*');
+  });
+
+  $("#submitReverser").on("click", function(){
+    var reversedText = reverseString( $("#toBeReversed").val() );
+    msg.payload = reversedText;
+    parent.postMessage(msg, '*');
+  });
+
+  function reverseString(str) {
+    return str.split("").reverse().join("");
+  }
+</script>
+</html>
