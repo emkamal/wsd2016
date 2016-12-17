@@ -147,6 +147,6 @@ class JsonTestCase(TestCase):
         response = self.client.get(self._url('xx', 'fi'))
         self.assertEquals(response.status_code, 404, "Looking for a real country in a non existent continent.")
 
-        # Norway should be found under Europe
+        # # Norway should be found under Europe
         response = self.client.get(self._url('eu', 'no'))
         self.assertEquals(response.status_code, 200, "Testing valid request status code.")
