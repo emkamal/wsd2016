@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 
 from countrydata.models import Continent, Country
+import pprint
+
 
 
 class TemplateTestCase(TestCase):
