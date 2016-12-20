@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Deploying Django</title>
+
+    <meta name="description" content="Deploying Django">
+    <meta name="author" content="Teemu Lehtinen">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+    <link rel="stylesheet" href="lib/reveal.js-3.1.0/css/reveal.css">
+    <link rel="stylesheet" href="lib/reveal.js-3.1.0/css/theme/moon.css" id="theme">
+
+    <link rel="stylesheet" href="lib/highlight/styles/monokai_sublime.css">
+
+    <link rel="stylesheet" href="extra/custom.css">
+    <style>
+      body {
+        background: #002b36;
+        background-color: #002b36;
+      }
+    </style>
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'lib/reveal.js-3.1.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+      <div class="slides">
+
+
+      <section class="general_topic">
+        <h2>Deploying Django</h2>
+        <p><small>Teemu Lehtinen</small></p>
+      </section>
+
+      <section>
+        <h2>Static Files</h2>
+        <p>It is crucial to use the
+        <a href="https://docs.djangoproject.com/en/1.10/howto/static-files/">
+        Django standard for static files</a>, such as CSS, JavaScript and images.</p>
+        <p>This way Django <em>runserver</em> will serve the static files for testing.</p>
+        <p>When deployed, Django will not, and should not, serve the static files.
+        Dedicated web servers are more efficient and robust. They should delegate only
+        the necessary requests to dynamic Django views. The static files are collected
+        and served directly.</p>
+      </section>
+
+      <section>
+        <p>Place static files into static directories:</p>
+        <pre><code class="html">
+project_name/app/static/app/one.css
+project_name/app/static/app/photo.jpg
+        </code></pre>
+        <p>Use Django tags to link static files in templates:</p>
+        <pre><code class="html">
+&lt;!doctype html&gt;
+&lt;html&gt;
+{% load staticfiles %}
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="{% static 'app/one.css' %}"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;img src="{% static 'app/photo.jpg' %}" alt="Me!"&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Heroku, platform as a service</h2>
+        <p>On the WSD course you will deploy your project to
+          <a href="https://www.heroku.com/">Heroku cloud</a>. Right from the start,
+          it will help to realize that Heroku does not provide a single server that you
+          could administer. You can only configure the cloud and Heroku will decide
+          when instances (or dynos) representing your system are run.</p>
+        <p>Most notably the file system <em>is not persistent</em>! Only the contents of the
+          Git repository and database will persist over a longer period.</p>
+      </section>
+
+      <section>
+        <h2>Deployment to Heroku</h2>
+        <p><a href="https://devcenter.heroku.com/articles/getting-started-with-django">
+          Heroku offers a tutorial</a> for creating and deploying a sample
+          Django application.</p>
+        <p>The following slides present how to add Heroku support to an existing
+          Django project. The presented additions will not effect local testing
+          with <em>runserver</em> command. An example of the finished demo is at
+          <a href="../examples/django_heroku_demo">examples/django_heroku_demo</a></p>
+      </section>
+
+      <section>
+        <p>Add new files to configure Heroku environment.</p>
+        <pre>Procfile</pre>
+        <pre><code class="html">
+web: gunicorn django_heroku_demo.wsgi --log-file -
+        </code></pre>
+        <pre>runtime.txt</pre>
+        <pre><code class="html">
+python-3.5.1
+        </code></pre>
+        <pre>requirements.txt</pre>
+        <pre><code class="html">
+Django==1.8
+dj-database-url==0.3.0
+dj-static==0.0.6
+gunicorn==19.3.0
+psycopg2==2.6
+static3==0.5.1
+        </code></pre>
+      </section>
+
+      <section>
+        <p>Append the Heroku specifics conditionally.</p>
+        <pre>settings.py (at end)</pre>
+        <pre><code class="python">
+# Only when running in Heroku
+if "DYNO" in os.environ:
+    STATIC_ROOT = 'staticfiles'
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
+
+    DEBUG = True # False, once service is succesfully deployed
+    ALLOWED_HOSTS = ['*']
+        </code></pre>
+        <pre>wsgi.py (replace the last line)</pre>
+        <pre><code class="python">
+if "DYNO" in os.environ:
+    from dj_static import Cling
+    application = Cling(get_wsgi_application())
+else:
+    application = get_wsgi_application()
+        </code></pre>
+      </section>
+
+
+      <section>
+        <h2>Create Heroku app</h2>
+        <p>First, you need to do a free light sign up in <a href="https://www.heroku.com/">Heroku</a>.</p>
+        <p>Second, install the <a href="https://toolbelt.heroku.com/">Heroku toolbelt</a>.</p>
+        <p>Open command line and move to your project directory:</p>
+        <pre><code class="html">
+$ heroku login
+Enter your Heroku credentials.
+...
+
+$ heroku create
+Creating nameless-bayou-7064... done, stack is cedar-14
+https://nameless-bayou-7064.herokuapp.com/ | https://git.heroku.com/nameless-bayou-7064.git
+        </code></pre>
+        <p><small>Heroku has now been added as git remote to your project repository.</small></p>
+      </section>
+
+      <section>
+        <h2>Publish to Heroku</h2>
+        <pre><code class="html">
+$ git push heroku master
+Counting objects: 32, done.
+...
+remote: -----&gt; Python app detected
+...
+
+$ heroku run python manage.py migrate
+Running python manage.py migrate on serene-shelf-1781... up, run.1781
+...
+        </code></pre>
+        <p><small>Inspect service state.</small></p>
+        <pre><code class="html">
+$ heroku ps
+=== web (Free): gunicorn django_heroku_demo.wsgi --log-file -
+web.1: up 2016/01/11 22:53:56 (~ 11s ago)
+
+$ heroku logs
+2016-01-11T20:17:01.718497+00:00 heroku[api]: ...
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Sending Email from Django</h2>
+        <p>Use <a href="https://docs.djangoproject.com/en/1.10/topics/email/">django.core.mail</a>.</p>
+        <p>Test by logging, accepted for the project demonstration too</p>
+        <pre>settings.py</pre>
+        <pre><code class="html">
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+        </code></pre>
+        <p>SMTP server would be configured as follows. Unfortunately
+          we cannot provide one for the project.</p>
+        <pre><code class="html">
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.server.nnn'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'username'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_USE_TLS = True
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>General Django deployment</h2>
+        <p>Django has also <a href="https://docs.djangoproject.com/en/1.10/howto/deployment/">
+          documentation for deployment</a>. Setting up and running Django
+          on a server (e.g. IAAS provider)
+          represents a typical system management task including
+          database and web server.</p>
+        <p>Like Heroku, other PAAS, such as Google App Engine or
+          AWS Elastic Beanstalk provide direct support for
+          launching Python/Django web applications.</p>
+      </section>
+
+      </div>
+    </div>
+
+    <script src="lib/jquery-1.11.1.min.js"></script>
+    <script src="lib/reveal.js-3.1.0/lib/js/head.min.js"></script>
+    <script src="lib/reveal.js-3.1.0/js/reveal.js"></script>
+
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        fragments: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/reveal.js-3.1.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'lib/reveal.js-3.1.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'lib/reveal.js-3.1.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'lib//highlight/highlight.pack.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'lib/reveal.js-3.1.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'lib/reveal.js-3.1.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+  </body>
+</html>
